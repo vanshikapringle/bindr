@@ -71,11 +71,18 @@ router.get("/incoming", authMiddleware, async (req, res) => {
         requests.request_id,
         requests.status,
         books.title,
+        books.author,
+        books.cover_image,
         books.owner_id,
-        requests.requester_id
+        requests.requester_id,
+        requests.borrow_date,
+        requests.return_date,
+        users.first_name AS requester_name
       FROM requests
       JOIN books
       ON requests.book_id = books.book_id
+      LEFT JOIN users
+      ON requests.requester_id = users.user_id
       WHERE books.owner_id = $1
       `,
       [ownerId]
@@ -137,6 +144,12 @@ router.put("/accept/:requestId", authMiddleware, async (req, res) => {
       AND request_id != $2
       `,
       [request.rows[0].book_id, requestId]
+    );
+
+    // Make book unavailable
+    await pool.query(
+      "UPDATE books SET availability_status = 'unavailable' WHERE book_id = $1",
+      [request.rows[0].book_id]
     );
 
     res.json(request.rows[0]);
@@ -206,8 +219,12 @@ router.get("/outgoing", authMiddleware, async (req, res) => {
         requests.request_id,
         requests.status,
         books.title,
+        books.author,
+        books.cover_image,
         books.owner_id,
-        requests.requester_id
+        requests.requester_id,
+        requests.borrow_date,
+        requests.return_date
       FROM requests
       JOIN books
       ON requests.book_id = books.book_id
@@ -217,6 +234,82 @@ router.get("/outgoing", authMiddleware, async (req, res) => {
     );
 
     res.json(requests.rows);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json("Server Error");
+  }
+});
+
+// Update Request Status
+router.put("/status/:requestId", authMiddleware, async (req, res) => {
+  try {
+    const requestId = req.params.requestId;
+    const { status } = req.body;
+    const currentUser = req.user.user_id;
+
+    // Allowed statuses
+    const allowedStatuses = ["requested", "approved", "picked_up", "currently_reading", "returned", "exchange_completed"];
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json("Invalid status");
+    }
+
+    const requestCheck = await pool.query(
+      `
+      SELECT requests.*, books.owner_id
+      FROM requests
+      JOIN books
+      ON requests.book_id = books.book_id
+      WHERE requests.request_id = $1
+      `,
+      [requestId]
+    );
+
+    if (requestCheck.rows.length === 0) {
+      return res.status(404).json("Request not found");
+    }
+
+    // Ensure only owner or requester can update
+    if (requestCheck.rows[0].owner_id !== currentUser && requestCheck.rows[0].requester_id !== currentUser) {
+      return res.status(403).json("Not authorized");
+    }
+
+    // If setting to 'exchange_completed', perform side effects
+    if (status === "exchange_completed" && requestCheck.rows[0].status !== "exchange_completed") {
+      const bookId = requestCheck.rows[0].book_id;
+      const ownerId = requestCheck.rows[0].owner_id;
+      const requesterId = requestCheck.rows[0].requester_id;
+
+      // Make book available again
+      await pool.query(
+        "UPDATE books SET availability_status = 'available' WHERE book_id = $1",
+        [bookId]
+      );
+
+      // Increment successful_exchanges for owner
+      await pool.query(
+        "UPDATE users SET successful_exchanges = COALESCE(successful_exchanges, 0) + 1 WHERE user_id = $1",
+        [ownerId]
+      );
+
+      // Add to reading history for requester
+      await pool.query(
+        "INSERT INTO reading_history (user_id, book_id, completed_at) VALUES ($1, $2, NOW())",
+        [requesterId, bookId]
+      );
+    }
+
+    const request = await pool.query(
+      `
+      UPDATE requests
+      SET status = $1
+      WHERE request_id = $2
+      RETURNING *
+      `,
+      [status, requestId]
+    );
+
+    res.json(request.rows[0]);
 
   } catch (err) {
     console.error(err.message);

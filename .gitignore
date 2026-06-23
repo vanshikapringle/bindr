@@ -16,3 +16,9 @@ Thumbs.db
 
 # pgAdmin backups
 *.backup
+
+# SQLite databases
+backend/*.sqlite
+
+# Old frontend
+frontend/

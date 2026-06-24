@@ -27,15 +27,16 @@ export default function Navbar() {
     window.location.href = "/";
   };
   return (
-    <nav className="w-full bg-[var(--color-midnight)] py-6 px-8 md:px-16 flex items-center justify-between z-50 shadow-sm relative">
+    <nav className="w-full bg-[var(--color-midnight)]/95 backdrop-blur-lg py-4 px-8 md:px-16 flex items-center justify-between z-50 shadow-xl border-b border-[var(--color-cherry)]/20 sticky top-0 transition-all duration-300">
       <div className="flex items-center gap-12">
-        <Link href="/" className="font-serif text-3xl font-bold tracking-tight text-[var(--color-cherry)]">
+        <Link href="/" className="flex items-center gap-2 font-serif text-3xl font-bold tracking-tight text-[var(--color-cherry)]">
+          <img src="/logo.png" alt="Bindr Logo" className="w-16 h-16 object-contain" />
           Bindr.
         </Link>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--color-cherry)] opacity-90">
-          <Link href="/explore" className="hover:text-white transition-colors">Explore</Link>
-          <Link href="/community" className="hover:text-white transition-colors">Community</Link>
-          <Link href="/about" className="hover:text-white transition-colors">About</Link>
+          <Link href="#how-it-works" className="hover:text-white transition-colors">How It Works</Link>
+          <Link href="#featured" className="hover:text-white transition-colors">Featured Books</Link>
+          <Link href="#testimonials" className="hover:text-white transition-colors">Testimonials</Link>
         </div>
       </div>
       

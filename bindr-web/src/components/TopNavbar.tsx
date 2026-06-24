@@ -55,7 +55,8 @@ export default function TopNavbar() {
             <button onClick={() => setIsSidebarOpen(true)} className="text-[var(--color-cherry)] hover:text-white transition-colors">
               <Menu size={24} />
             </button>
-            <Link href="/" className="font-serif text-2xl font-bold text-[var(--color-cherry)]">
+            <Link href="/" className="flex items-center gap-2 font-serif text-2xl font-bold text-[var(--color-cherry)]">
+              <img src="/logo.png" alt="Bindr Logo" className="w-12 h-12 object-contain" />
               Bindr.
             </Link>
           </div>

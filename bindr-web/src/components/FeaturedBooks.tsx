@@ -43,7 +43,7 @@ const featuredBooks = [
 
 export default function FeaturedBooks() {
   return (
-    <section className="w-full py-24 px-8 md:px-16 bg-background">
+    <section id="featured" className="w-full py-24 px-8 md:px-16 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-end mb-16">
           <div>

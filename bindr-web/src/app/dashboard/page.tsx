@@ -148,11 +148,16 @@ function DiscoverContent() {
   return (
     <div className="p-8 max-w-[1400px] mx-auto text-foreground min-h-screen">
       {/* Header */}
-      <header className="mb-12 border-b border-border pb-8">
+      <header className="mb-12 border-b border-border pb-8 flex justify-between items-center">
         <div>
           <h1 className="font-serif text-4xl mb-2">Discover Books</h1>
-          <p className="text-muted text-lg">Find new stories shared by readers in your neighborhood.</p>
+          <p className="text-muted text-lg max-w-2xl">Find new stories shared by readers in your neighborhood.</p>
         </div>
+        <img 
+          src="/back.png" 
+          alt="Discover Illustration" 
+          className="w-[400px] lg:w-[500px] xl:w-[600px] h-auto object-contain hidden sm:block" 
+        />
       </header>
 
       {loading ? (

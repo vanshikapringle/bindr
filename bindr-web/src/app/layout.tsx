@@ -15,6 +15,9 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Bindr. | Every book deserves another chapter.",
   description: "A modern book exchange and community platform where users can discover, exchange, lend, and track books.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 import InitialLoader from "@/components/InitialLoader";

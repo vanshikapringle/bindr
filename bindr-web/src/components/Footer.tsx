@@ -21,7 +21,8 @@ export default function Footer() {
         </div>
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
         <div className="col-span-2 md:col-span-1">
-          <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-white mb-4 block">
+          <Link href="/" className="flex items-center gap-2 font-serif text-3xl font-bold tracking-tight text-[var(--color-cherry)] mb-4">
+            <img src="/logo.png" alt="Bindr Logo" className="w-16 h-16 object-contain" />
             Bindr.
           </Link>
           <p className="text-white/70 text-sm max-w-xs">

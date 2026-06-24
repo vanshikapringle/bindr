@@ -32,7 +32,7 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="w-full py-32 px-8 md:px-16 bg-accent border-y border-border">
+    <section id="testimonials" className="w-full py-32 px-8 md:px-16 bg-accent border-y border-border">
       <div className="max-w-4xl mx-auto text-center relative h-64 md:h-48 flex items-center justify-center">
         {testimonials.map((t, index) => (
           <motion.div

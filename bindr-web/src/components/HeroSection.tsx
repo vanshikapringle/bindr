@@ -14,7 +14,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[85vh] flex items-center px-8 md:px-16 overflow-hidden">
+    <section className="relative w-full py-24 md:py-32 flex items-center px-8 md:px-16 overflow-hidden">
       {/* Noticeable Grainy Texture Overlay */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-40 mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
       
@@ -27,11 +27,11 @@ export default function HeroSection() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-2xl z-10"
         >
-          <h1 className="font-serif text-5xl md:text-7xl leading-[1.1] text-foreground mb-6">
+          <h1 className="font-serif text-5xl md:text-7xl font-bold text-foreground mb-6">
             Give Your Books <br className="hidden md:block" />
-            <span className="italic text-muted font-light">Another Life.</span>
+            <span className="italic text-muted font-semibold">Another Life.</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted mb-10 leading-relaxed max-w-lg">
+          <p className="text-lg md:text-xl font-medium text-muted mb-10 leading-relaxed max-w-lg">
             Exchange books with readers around you, discover hidden gems, and build a personal library that evolves with every story.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -49,29 +49,44 @@ export default function HeroSection() {
             </Link>
           </div>
         </motion.div>
+      </div>
 
-        {/* Right Content - Floating Books */}
-        <div className="relative h-[500px] w-full hidden lg:block perspective-1000">
-          <div 
-            className="absolute top-10 right-20 w-48 h-72 rounded-r-2xl rounded-l-md shadow-2xl border-l-[12px] border-black/20 p-6 flex flex-col justify-between z-20 transform -rotate-6 bg-[#C58A55] overflow-hidden"
-            style={{ backgroundImage: `url(https://covers.openlibrary.org/b/isbn/9781400031702-L.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-          >
-            <div className="absolute inset-0 bg-black/10"></div>
-          </div>
-
-          <div 
-            className="absolute bottom-10 right-40 w-56 h-80 rounded-r-2xl rounded-l-md shadow-2xl border-l-[14px] border-black/20 p-6 flex flex-col justify-between z-30 transform rotate-12 bg-[#4A5D4E] overflow-hidden"
-            style={{ backgroundImage: `url(https://covers.openlibrary.org/b/isbn/9781400079278-L.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-          >
-            <div className="absolute inset-0 bg-black/10"></div>
-          </div>
-
-          <div 
-            className="absolute top-32 right-64 w-40 h-60 rounded-r-xl rounded-l-sm shadow-xl border-l-[10px] border-black/20 p-4 flex flex-col justify-end z-10 transform -rotate-12 bg-[#70241C] overflow-hidden"
-            style={{ backgroundImage: `url(https://covers.openlibrary.org/b/isbn/9780140449136-L.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-          >
-            <div className="absolute inset-0 bg-black/10"></div>
-          </div>
+      {/* Right Content - Marquee Columns (Moved outside the relative grid so it spans the full section) */}
+      <div className="absolute inset-y-0 right-0 w-1/2 hidden lg:flex justify-end gap-4 overflow-hidden pr-8 xl:pr-16 z-0">
+        {/* Column 1 (Downwards) */}
+        <div className="flex flex-col gap-4 animate-marquee-vertical min-w-[140px] w-40 mt-[-200px]">
+          {[1, 2, 3, 4, 1, 2, 3, 4].map((item, i) => (
+            <img 
+              key={`c1-${i}`}
+              src={`https://covers.openlibrary.org/b/isbn/${["9780545010221", "9780142424179", "9781501110368", "9780765382030"][item-1]}-L.jpg`} 
+              alt="Book cover" 
+              className="w-full h-auto aspect-[2/3] object-cover rounded-md shadow-md border border-border"
+            />
+          ))}
+        </div>
+        
+        {/* Column 2 (Upwards) */}
+        <div className="flex flex-col gap-4 animate-marquee-vertical-reverse min-w-[140px] w-40 mt-[-600px]">
+          {[1, 2, 3, 4, 1, 2, 3, 4].map((item, i) => (
+            <img 
+              key={`c2-${i}`}
+              src={`https://covers.openlibrary.org/b/isbn/${["9781501171345", "9780062457714", "9781594130015", "9780316015844"][item-1]}-L.jpg`} 
+              alt="Book cover" 
+              className="w-full h-auto aspect-[2/3] object-cover rounded-md shadow-md border border-border"
+            />
+          ))}
+        </div>
+        
+        {/* Column 3 (Downwards) */}
+        <div className="flex flex-col gap-4 animate-marquee-vertical min-w-[140px] w-40 mt-[-400px]">
+          {[1, 2, 3, 4, 1, 2, 3, 4].map((item, i) => (
+            <img 
+              key={`c3-${i}`}
+              src={`https://covers.openlibrary.org/b/isbn/${["9780547928227", "9780143039433", "9781400031702", "9780062315007"][item-1]}-L.jpg`} 
+              alt="Book cover" 
+              className="w-full h-auto aspect-[2/3] object-cover rounded-md shadow-md border border-border"
+            />
+          ))}
         </div>
       </div>
     </section>

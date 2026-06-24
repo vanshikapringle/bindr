@@ -13,14 +13,14 @@ export default function DatabaseExplorer() {
   ];
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-[#FCFAF8]">
+    <div className="flex flex-col h-full overflow-hidden bg-[var(--background)]">
       {/* Top Header */}
       <header className="h-14 border-b border-border flex items-center justify-between px-6 bg-white shrink-0">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Database size={16} className="text-muted" /> Database
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-[#E8DCC8]/30 px-3 py-1.5 rounded-md text-xs font-medium text-accent border border-[#E8DCC8]">
+          <div className="flex items-center gap-2 bg-[var(--accent)]/30 px-3 py-1.5 rounded-md text-xs font-medium text-accent border border-[var(--accent)]">
             <span className="w-2 h-2 rounded-full bg-green-500"></span> Connected to prod-bindr-db
           </div>
           <div className="w-px h-6 bg-border mx-2"></div>
@@ -69,7 +69,7 @@ export default function DatabaseExplorer() {
                 <input 
                   type="text" 
                   placeholder="Filter tables..." 
-                  className="w-full bg-[#FCFAF8] border border-border rounded-lg py-1.5 pl-8 pr-3 text-sm focus:outline-none focus:border-accent"
+                  className="w-full bg-[var(--background)] border border-border rounded-lg py-1.5 pl-8 pr-3 text-sm focus:outline-none focus:border-accent"
                 />
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function DatabaseExplorer() {
               <p className="text-[10px] font-bold text-muted uppercase tracking-wider mb-3">Public Schema</p>
               <div className="space-y-1">
                 {tables.map(table => (
-                  <button key={table} className="w-full text-left px-3 py-1.5 rounded-md text-sm text-foreground hover:bg-[#E8DCC8]/50 flex items-center gap-2 transition-colors">
+                  <button key={table} className="w-full text-left px-3 py-1.5 rounded-md text-sm text-foreground hover:bg-[var(--accent)]/50 flex items-center gap-2 transition-colors">
                     <Database size={14} className="text-muted" /> {table}
                   </button>
                 ))}
@@ -87,7 +87,7 @@ export default function DatabaseExplorer() {
 
           {/* SQL Editor */}
           <div className="flex-1 bg-white border border-border rounded-2xl shadow-sm flex flex-col overflow-hidden">
-            <div className="flex border-b border-border bg-[#FCFAF8]">
+            <div className="flex border-b border-border bg-[var(--background)]">
               <button 
                 onClick={() => setActiveTab('sql')}
                 className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'sql' ? 'border-accent text-accent' : 'border-transparent text-muted hover:text-foreground'}`}

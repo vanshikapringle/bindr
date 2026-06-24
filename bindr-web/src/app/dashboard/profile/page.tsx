@@ -60,7 +60,7 @@ export default function Profile() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1">
           <div className="bg-white border border-border rounded-2xl p-8 shadow-sm flex flex-col items-center text-center">
-            <div className="w-32 h-32 bg-[#E8DCC8] rounded-full flex items-center justify-center text-4xl font-bold text-[#70241C] mb-6">
+            <div className="w-32 h-32 bg-[var(--accent)] rounded-full flex items-center justify-center text-4xl font-bold text-[#70241C] mb-6">
               {profile.name?.substring(0, 2).toUpperCase() || "??"}
             </div>
             <h2 className="text-2xl font-bold font-serif">{profile.name}</h2>

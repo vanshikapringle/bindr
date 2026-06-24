@@ -158,7 +158,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FCFAF8] font-sans text-foreground selection:bg-accent selection:text-white flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--background)] font-sans text-foreground selection:bg-accent selection:text-white flex flex-col relative overflow-hidden">
       
       {/* Background SVG Grain */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-40 mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
@@ -217,7 +217,7 @@ export default function Onboarding() {
                       onClick={() => toggleGenre(g)}
                       className={`px-5 py-2 rounded-full border text-sm font-medium transition-all duration-300 ${
                         isSelected 
-                          ? "bg-[#E8DCC8] border-accent text-accent shadow-sm" 
+                          ? "bg-[var(--accent)] border-accent text-accent shadow-sm" 
                           : "bg-white border-border text-muted hover:border-accent hover:text-foreground"
                       }`}
                     >
@@ -243,7 +243,7 @@ export default function Onboarding() {
                   <h2 className="font-serif text-4xl mb-2">Build Your Shelf</h2>
                   <p className="text-muted">Add the books you&apos;re willing to lend.</p>
                 </div>
-                <div className="text-sm font-medium text-accent bg-[#E8DCC8]/50 px-3 py-1 rounded-full">
+                <div className="text-sm font-medium text-accent bg-[var(--accent)]/50 px-3 py-1 rounded-full">
                   {books.length} {books.length === 1 ? 'Book' : 'Books'} Added
                 </div>
               </div>
@@ -290,7 +290,7 @@ export default function Onboarding() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                     key={index} 
-                    className="relative aspect-[2/3] bg-[#E8DCC8] border border-[#d6c7af] rounded-r-xl rounded-l-md shadow-md overflow-hidden text-left border-l-[8px] border-l-[#70241C]"
+                    className="relative aspect-[2/3] bg-[var(--accent)] border border-[#d6c7af] rounded-r-xl rounded-l-md shadow-md overflow-hidden text-left border-l-[8px] border-l-[#70241C]"
                   >
                     {book.coverImage ? (
                       <img src={book.coverImage} alt={book.title} className="absolute inset-0 w-full h-full object-cover opacity-90" />

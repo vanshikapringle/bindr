@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function AdminLogin() {
   return (
-    <div className="min-h-screen bg-[#FCFAF8] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--background)] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center text-accent mb-6">
           <Database size={48} strokeWidth={1.5} />

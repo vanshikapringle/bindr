@@ -59,7 +59,7 @@ export default function Messages() {
         <div className="space-y-4">
           {messages.map((msg, i) => (
             <div key={i} className="bg-white border border-border rounded-xl p-6 shadow-sm flex items-start gap-4">
-              <div className="w-12 h-12 bg-[#E8DCC8] rounded-full flex items-center justify-center text-accent shrink-0 mt-1">
+              <div className="w-12 h-12 bg-[var(--accent)] rounded-full flex items-center justify-center text-accent shrink-0 mt-1">
                 <MessageSquare size={20} />
               </div>
               <div className="flex-1">
@@ -83,7 +83,7 @@ export default function Messages() {
         </div>
       ) : (
         <div className="h-[50vh] flex flex-col items-center justify-center text-center">
-          <div className="w-24 h-24 bg-[#E8DCC8] rounded-full flex items-center justify-center text-accent mb-6">
+          <div className="w-24 h-24 bg-[var(--accent)] rounded-full flex items-center justify-center text-accent mb-6">
             <MessageSquareOff size={40} strokeWidth={1.5} />
           </div>
           <h2 className="font-serif text-3xl text-foreground mb-3">No New Messages</h2>

@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import Marquee from "@/components/Marquee";
 import HowItWorks from "@/components/HowItWorks";
 import Statistics from "@/components/Statistics";
 import FeaturedBooks from "@/components/FeaturedBooks";
@@ -15,7 +14,6 @@ export default function Home() {
       <Navbar />
       <main className="flex-1 w-full flex flex-col items-center">
         <HeroSection />
-        <Marquee />
         <HowItWorks />
         <Statistics />
         <FeaturedBooks />

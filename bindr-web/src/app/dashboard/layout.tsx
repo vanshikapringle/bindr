@@ -1,6 +1,6 @@
 "use client";
 
-import DashboardSidebar from "@/components/DashboardSidebar";
+import TopNavbar from "@/components/TopNavbar";
 import { useEffect } from "react";
 
 export default function DashboardLayout({
@@ -23,9 +23,9 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="min-h-screen flex bg-[#FCFAF8] font-sans">
-      <DashboardSidebar />
-      <main className="flex-1 overflow-y-auto">
+    <div className="min-h-screen flex flex-col bg-[var(--background)] font-sans">
+      <TopNavbar />
+      <main className="flex-1 w-full max-w-[1400px] mx-auto overflow-y-auto">
         {children}
       </main>
     </div>

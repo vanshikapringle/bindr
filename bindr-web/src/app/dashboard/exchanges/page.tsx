@@ -136,7 +136,7 @@ export default function Exchanges() {
             <div key={i} className="bg-white border border-border rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
               <div className="flex gap-6 items-center">
                 <div 
-                  className="w-16 h-24 bg-[#E8DCC8] rounded-r-md rounded-l-sm shadow-sm border-l-[6px] border-black/20 relative overflow-hidden flex-shrink-0"
+                  className="w-16 h-24 bg-[var(--accent)] rounded-r-md rounded-l-sm shadow-sm border-l-[6px] border-black/20 relative overflow-hidden flex-shrink-0"
                   style={{ backgroundImage: `url(${req.cover_image || `https://covers.openlibrary.org/b/title/${encodeURIComponent(req.title)}-L.jpg`})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                 >
                   <div className="absolute inset-0 bg-black/10"></div>
@@ -152,10 +152,10 @@ export default function Exchanges() {
               
               {activeTab === "incoming" && req.status === 'pending' ? (
                 <div className="flex flex-row md:flex-col gap-3">
-                  <button onClick={() => handleAcceptRequest(req.request_id)} className="flex-1 md:flex-none bg-accent text-white px-6 py-2.5 rounded-xl font-medium hover:bg-accent-hover transition-colors flex items-center justify-center gap-2">
+                  <button onClick={() => handleAcceptRequest(req.request_id)} className="dashboard-btn flex-1 md:flex-none">
                     <Check size={18} /> Accept
                   </button>
-                  <button onClick={() => handleRejectRequest(req.request_id)} className="flex-1 md:flex-none bg-transparent border border-border text-foreground px-6 py-2.5 rounded-xl font-medium hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors flex items-center justify-center gap-2">
+                  <button onClick={() => handleRejectRequest(req.request_id)} className="dashboard-btn flex-1 md:flex-none !border-solid !border-border !bg-transparent !text-foreground hover:!bg-red-50 hover:!text-red-600 hover:!border-red-200">
                     <X size={18} /> Decline
                   </button>
                 </div>
@@ -164,7 +164,7 @@ export default function Exchanges() {
                   <div className="text-green-600 font-medium flex items-center gap-2"><Check size={20}/> {req.status === 'accepted' ? 'Accepted' : 'Active'}</div>
                   <button 
                     onClick={() => handleReturnBook(req.request_id)}
-                    className="bg-foreground text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent transition-colors"
+                    className="dashboard-btn"
                   >
                     Complete Exchange (Mark as Returned)
                   </button>

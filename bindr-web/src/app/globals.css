@@ -14,28 +14,33 @@
 }
 
 :root {
-  --background: #F4D1A8;
-  --card: #F7F0E4;
-  --foreground: #1B1B1B;
-  --muted: #5A5A5A;
-  --border: rgba(0, 0, 0, 0.08);
-  --accent: #C58A55;
-  --accent-hover: #B5733D;
+  --color-midnight: #31031F;
+  --color-cherry: #EFA8AC;
+  --color-cherry-light: #F4C4C8;
+
+  --background: var(--color-cherry-light);
+  --card: #FFFFFF;
+  --foreground: var(--color-midnight);
+  --muted: #4A4A4A;
+  --border: rgba(49, 3, 31, 0.15);
+  --accent: var(--color-midnight);
+  --accent-hover: #1c0111;
 }
 
 body {
   background-color: var(--background);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
   color: var(--foreground);
   font-family: var(--font-sans);
 }
 
 .loader {
-  --background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-  --shadow: rgba(197, 138, 85, 0.28);
-  --text: var(--muted);
-  --page: rgba(255, 255, 255, 0.36);
-  --page-fold: rgba(255, 255, 255, 0.52);
-  --duration: 6s;
+  --background: linear-gradient(135deg, var(--color-midnight), var(--color-cherry));
+  --shadow: rgba(49, 3, 31, 0.28);
+  --text: var(--color-midnight);
+  --page: rgba(255, 255, 255, 0.46);
+  --page-fold: rgba(255, 255, 255, 0.62);
+  --duration: 5s;
   width: 200px;
   height: 140px;
   position: relative;
@@ -169,4 +174,22 @@ body {
   65% { opacity: 1; }
   80%, 100% { opacity: 0; }
   95%, 100% { transform: rotateY(0deg); }
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+@keyframes marquee-vertical-reverse {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical 25s linear infinite;
+}
+
+.animate-marquee-vertical-reverse {
+  animation: marquee-vertical-reverse 25s linear infinite;
 }

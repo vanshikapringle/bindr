@@ -11,7 +11,7 @@ export default function Loading() {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#FCFAF8]">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--background)]">
       <div className="loader">
         <div>
           <ul>

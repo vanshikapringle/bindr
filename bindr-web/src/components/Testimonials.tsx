@@ -32,7 +32,7 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="w-full py-32 px-8 md:px-16 bg-[#F7F0E4] border-y border-border">
+    <section className="w-full py-32 px-8 md:px-16 bg-accent border-y border-border">
       <div className="max-w-4xl mx-auto text-center relative h-64 md:h-48 flex items-center justify-center">
         {testimonials.map((t, index) => (
           <motion.div
@@ -46,12 +46,12 @@ export default function Testimonials() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="absolute w-full"
           >
-            <p className="font-serif text-3xl md:text-5xl text-foreground leading-tight mb-8">
+            <p className="font-serif text-3xl md:text-5xl text-white leading-tight mb-8">
               &quot;{t.quote}&quot;
             </p>
             <div>
-              <p className="font-serif text-lg text-foreground font-medium">{t.author}</p>
-              <p className="text-muted text-sm uppercase tracking-widest">{t.location}</p>
+              <p className="font-serif text-lg text-white font-medium">{t.author}</p>
+              <p className="text-white/60 text-sm uppercase tracking-widest">{t.location}</p>
             </div>
           </motion.div>
         ))}
@@ -62,7 +62,7 @@ export default function Testimonials() {
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`w-2 h-2 rounded-full transition-all ${
-                index === currentIndex ? "bg-accent w-6" : "bg-muted/30"
+                index === currentIndex ? "bg-white w-6" : "bg-white/30"
               }`}
             />
           ))}

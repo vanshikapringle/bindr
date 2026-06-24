@@ -117,15 +117,15 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#FCFAF8] font-sans selection:bg-accent selection:text-white">
+    <div className="flex min-h-screen bg-[var(--background)] font-sans selection:bg-accent selection:text-white">
       
       {/* Left Side: Editorial Branding & Illustration */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-[#E8DCC8] overflow-hidden flex-col justify-between p-16">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-[var(--accent)] overflow-hidden flex-col justify-between p-16">
         {/* SVG Noise Grain Overlay */}
         <div className="absolute inset-0 pointer-events-none z-0 opacity-40 mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
         
         <div className="relative z-10">
-          <Link href="/" className="font-serif text-3xl font-bold text-foreground">
+          <Link href="/" className="font-serif text-3xl font-bold text-[var(--color-cherry)]">
             Bindr.
           </Link>
         </div>
@@ -136,10 +136,10 @@ export default function Register() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h1 className="font-serif text-5xl leading-[1.1] text-foreground mb-6">
+            <h1 className="font-serif text-5xl leading-[1.1] text-[var(--color-cherry)] mb-6">
               Every book deserves another chapter.
             </h1>
-            <p className="text-xl text-foreground/80 leading-relaxed font-light">
+            <p className="text-xl text-[var(--color-cherry)]/80 leading-relaxed font-light">
               Join a community of readers exchanging stories, discoveries, and well-loved books.
             </p>
           </motion.div>
@@ -239,13 +239,13 @@ export default function Register() {
                 <div className="flex gap-4">
                   <label className="flex-1 relative cursor-pointer">
                     <input type="radio" name="accountType" value="reader" className="peer sr-only" defaultChecked />
-                    <div className="w-full p-4 text-center border border-border rounded-xl text-muted peer-checked:border-accent peer-checked:bg-[#E8DCC8]/30 peer-checked:text-accent transition-all hover:bg-gray-50">
+                    <div className="w-full p-4 text-center border border-border rounded-xl text-muted peer-checked:border-accent peer-checked:bg-[var(--accent)]/30 peer-checked:text-accent transition-all hover:bg-gray-50">
                       <span className="font-medium text-sm">Reader</span>
                     </div>
                   </label>
                   <label className="flex-1 relative cursor-pointer">
                     <input type="radio" name="accountType" value="admin" className="peer sr-only" />
-                    <div className="w-full p-4 text-center border border-border rounded-xl text-muted peer-checked:border-accent peer-checked:bg-[#E8DCC8]/30 peer-checked:text-accent transition-all hover:bg-gray-50">
+                    <div className="w-full p-4 text-center border border-border rounded-xl text-muted peer-checked:border-accent peer-checked:bg-[var(--accent)]/30 peer-checked:text-accent transition-all hover:bg-gray-50">
                       <span className="font-medium text-sm">Admin</span>
                     </div>
                   </label>

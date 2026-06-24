@@ -14,7 +14,7 @@ export default function ReturnTracker({ borrowDate, returnDate }: { borrowDate: 
   const isOverdue = daysRemaining < 0;
 
   return (
-    <div className="bg-[#FCFAF8] border border-border rounded-xl p-5 mt-4">
+    <div className="bg-[var(--background)] border border-border rounded-xl p-5 mt-4">
       <h5 className="font-serif font-bold text-foreground mb-4">Exchange Details</h5>
       
       <div className="grid grid-cols-2 gap-4">
@@ -50,7 +50,7 @@ export default function ReturnTracker({ borrowDate, returnDate }: { borrowDate: 
             {Math.abs(daysRemaining)} Days Overdue
           </span>
         ) : (
-          <span className="bg-[#E8DCC8] text-accent px-3 py-1 rounded-full text-xs font-bold">
+          <span className="bg-[var(--accent)] text-accent px-3 py-1 rounded-full text-xs font-bold">
             {daysRemaining} Days Remaining
           </span>
         )}

@@ -1,19 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Search, Tag } from "lucide-react";
 import BookCard from "@/components/BookCard";
 
-export default function Discover() {
+function DiscoverContent() {
   const [data, setData] = useState({ 
     nearby: [], 
     recent: [], 
     popular: [], 
-    recommended: [] 
+    recommended: [],
+    communityReads: []
   });
   const [user, setUser] = useState<any>({ name: "Reader", favourite_genres: "Fiction" });
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchParams = useSearchParams();
+  const searchParamQuery = searchParams.get("search") || "";
+  const [searchQuery, setSearchQuery] = useState(searchParamQuery);
   const [searchResults, setSearchResults] = useState([]);
 
   const fetchData = async () => {
@@ -34,7 +38,7 @@ export default function Discover() {
       // Fetch Dashboard Data (In a real app, backend would filter and sort these by location)
       const dashRes = await fetch("http://localhost:5000/public-dashboard-data", { headers });
       if (dashRes.ok) {
-        const { books } = await dashRes.json();
+        const { books, community_reads } = await dashRes.json();
         
         // Mocking the categorization based on requirements
         // Only books not owned by user and available are returned by backend's public-dashboard-data
@@ -61,7 +65,8 @@ export default function Discover() {
           nearby,
           recent,
           popular,
-          recommended: finalRecommended
+          recommended: finalRecommended,
+          communityReads: community_reads || []
         });
       }
 
@@ -87,21 +92,35 @@ export default function Discover() {
     fetchData();
   }, []);
 
-  const handleSearch = async (e: any) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
+  useEffect(() => {
+    if (searchParamQuery) {
+      setSearchQuery(searchParamQuery);
+      performSearch(searchParamQuery);
+    } else {
+      setSearchResults([]);
+      setSearchQuery("");
+    }
+  }, [searchParamQuery]);
+
+  const performSearch = async (query: string) => {
+    if (!query.trim()) {
       setSearchResults([]);
       return;
     }
     try {
-      // In a real app, this search would also filter out user's own books and return distance
-      const res = await fetch(`http://localhost:5000/books/search?title=${encodeURIComponent(searchQuery)}`);
+      const res = await fetch(`http://localhost:5000/books/search?title=${encodeURIComponent(query)}`);
       if (res.ok) {
         const results = await res.json();
         setSearchResults(results.map((b: any) => ({ ...b, distance: 'Nearby' })));
       }
     } catch (err) { console.error(err); }
   };
+
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    performSearch(searchQuery);
+  };
+
 
   const handleRequestBook = async (book: any) => {
     try {
@@ -129,21 +148,11 @@ export default function Discover() {
   return (
     <div className="p-8 max-w-[1400px] mx-auto text-foreground min-h-screen">
       {/* Header */}
-      <header className="mb-12 flex flex-col md:flex-row md:justify-between md:items-end gap-6 border-b border-border pb-8">
+      <header className="mb-12 border-b border-border pb-8">
         <div>
           <h1 className="font-serif text-4xl mb-2">Discover Books</h1>
           <p className="text-muted text-lg">Find new stories shared by readers in your neighborhood.</p>
         </div>
-        <form onSubmit={handleSearch} className="relative w-full md:w-auto">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
-          <input 
-            type="text" 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search titles, authors, or genres..." 
-            className="w-full md:w-80 bg-white border border-border rounded-full pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-accent shadow-sm"
-          />
-        </form>
       </header>
 
       {loading ? (
@@ -171,6 +180,36 @@ export default function Discover() {
 
           {!searchResults.length && (
             <>
+              {/* Community is Reading */}
+              {data.communityReads?.length > 0 && (
+                <section>
+                  <div className="flex justify-between items-end mb-6">
+                    <h2 className="font-serif text-3xl">Community is Reading</h2>
+                  </div>
+                  <div className="flex gap-6 overflow-x-auto pb-4 custom-scrollbar">
+                    {data.communityReads.map((book: any, i) => (
+                      <div key={i} className="flex-shrink-0 w-48 bg-card border border-border rounded-xl p-3 shadow-sm relative cursor-pointer hover:scale-[1.02] transition-transform" onClick={() => handleRequestBook(book)}>
+                        <img 
+                          src={book.cover_image || "/placeholder.jpg"} 
+                          alt={book.title} 
+                          className="w-full aspect-[2/3] object-cover rounded-md mb-3"
+                        />
+                        <p className="text-sm font-bold text-foreground line-clamp-1">{book.title}</p>
+                        <p className="text-xs text-muted mb-2 line-clamp-1">{book.author}</p>
+                        <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
+                          <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center text-[10px] font-bold text-accent">
+                            {book.reader_name?.substring(0, 2).toUpperCase() || "U"}
+                          </div>
+                          <span className="text-xs text-muted">
+                            {book.availability_status === 'completed' ? 'Finished reading' : 'Currently reading'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
               {/* Available Near You */}
               {data.nearby.length > 0 && (
                 <section>
@@ -191,26 +230,27 @@ export default function Discover() {
                 </section>
               )}
 
-              {/* Recommended Reads */}
+              {/* For You Recommendations */}
               {data.recommended.length > 0 && (
                 <section>
-                  <h2 className="font-serif text-3xl mb-6">Recommended Reads</h2>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                  <h2 className="font-serif text-3xl mb-6 border-b border-border pb-4">For You</h2>
+                  <p className="text-muted text-sm mb-6">Based on your favorite genres ({user.favourite_genres})</p>
+                  <div className="flex gap-6 overflow-x-auto pb-4 custom-scrollbar">
                     {data.recommended.map((book: any, i) => (
-                      <BookCard 
-                        key={i} 
-                        book={book} 
-                        distance={book.distance}
-                        onRequest={handleRequestBook}
-                        onWishlist={handleWishlist}
-                      />
+                      <div key={i} className="flex-shrink-0 w-40 cursor-pointer hover:scale-105 transition-transform" onClick={() => handleRequestBook(book)}>
+                        <img 
+                          src={book.cover_image || "/placeholder.jpg"} 
+                          alt={book.title} 
+                          className="w-full aspect-[2/3] object-cover rounded-md shadow-md"
+                        />
+                      </div>
                     ))}
                   </div>
                 </section>
               )}
 
               {/* Popular Categories */}
-              <section className="bg-[#FCFAF8] py-8 px-8 -mx-8 border-y border-border">
+              <section className="bg-background py-8 px-8 -mx-8 border-y border-border">
                 <h2 className="font-serif text-2xl mb-6">Popular Genres Near You</h2>
                 <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
                   {['Fiction', 'Sci-Fi', 'Fantasy', 'Romance', 'Mystery', 'Biography'].map(cat => (
@@ -262,5 +302,13 @@ export default function Discover() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function Discover() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted">Loading dashboard...</div>}>
+      <DiscoverContent />
+    </Suspense>
   );
 }

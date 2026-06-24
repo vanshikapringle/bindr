@@ -27,28 +27,25 @@ export default function Navbar() {
     window.location.href = "/";
   };
   return (
-    <nav className="w-full bg-transparent py-6 px-8 md:px-16 flex items-center justify-between z-50">
+    <nav className="w-full bg-[var(--color-midnight)] py-6 px-8 md:px-16 flex items-center justify-between z-50 shadow-sm relative">
       <div className="flex items-center gap-12">
-        <Link href="/" className="font-serif text-3xl font-bold tracking-tight text-foreground">
+        <Link href="/" className="font-serif text-3xl font-bold tracking-tight text-[var(--color-cherry)]">
           Bindr.
         </Link>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground">
-          <Link href="/explore" className="hover:text-accent transition-colors">Explore</Link>
-          <Link href="/community" className="hover:text-accent transition-colors">Community</Link>
-          <Link href="/about" className="hover:text-accent transition-colors">About</Link>
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--color-cherry)] opacity-90">
+          <Link href="/explore" className="hover:text-white transition-colors">Explore</Link>
+          <Link href="/community" className="hover:text-white transition-colors">Community</Link>
+          <Link href="/about" className="hover:text-white transition-colors">About</Link>
         </div>
       </div>
       
       <div className="flex items-center gap-6">
-        <button className="hidden md:flex text-foreground hover:text-accent transition-colors">
-          <Search size={20} />
-        </button>
         {isLoggedIn ? (
           <>
             <div className="relative group hidden md:block">
-              <button className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-accent transition-colors">
-                <div className="w-9 h-9 bg-[#E8DCC8] rounded-full flex items-center justify-center border border-border overflow-hidden">
-                  <span className="text-xs font-bold text-accent">{user?.name ? user.name.substring(0, 2).toUpperCase() : "ME"}</span>
+              <button className="flex items-center gap-2 text-sm font-medium text-[var(--color-cherry)] hover:text-white transition-colors">
+                <div className="w-9 h-9 bg-[var(--color-cherry)] rounded-full flex items-center justify-center border border-white/20 overflow-hidden shadow-sm">
+                  <span className="text-xs font-bold text-[var(--color-midnight)]">{user?.name ? user.name.substring(0, 2).toUpperCase() : "ME"}</span>
                 </div>
               </button>
               <div className="absolute right-0 mt-2 w-56 bg-white border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col p-2 z-50">
@@ -58,9 +55,9 @@ export default function Navbar() {
                     <p className="text-xs text-muted truncate">{user.email}</p>
                   </div>
                 )}
-                <Link href="/dashboard" className="px-4 py-2 text-sm font-medium text-foreground hover:bg-[#FCFAF8] hover:text-accent rounded-lg transition-colors">Dashboard</Link>
-                <Link href="/dashboard/profile" className="px-4 py-2 text-sm font-medium text-foreground hover:bg-[#FCFAF8] hover:text-accent rounded-lg transition-colors">Profile</Link>
-                <Link href="/dashboard/settings" className="px-4 py-2 text-sm font-medium text-foreground hover:bg-[#FCFAF8] hover:text-accent rounded-lg transition-colors">Settings</Link>
+                <Link href="/dashboard" className="px-4 py-2 text-sm font-medium text-foreground hover:bg-[var(--background)] hover:text-[var(--color-midnight)] rounded-lg transition-colors">Dashboard</Link>
+                <Link href="/dashboard/profile" className="px-4 py-2 text-sm font-medium text-foreground hover:bg-[var(--background)] hover:text-[var(--color-midnight)] rounded-lg transition-colors">Profile</Link>
+                <Link href="/dashboard/settings" className="px-4 py-2 text-sm font-medium text-foreground hover:bg-[var(--background)] hover:text-[var(--color-midnight)] rounded-lg transition-colors">Settings</Link>
                 <div className="h-px bg-border my-1"></div>
                 <button onClick={handleLogout} className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 text-left rounded-lg transition-colors">Log Out</button>
               </div>
@@ -68,8 +65,8 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <Link href="/register?mode=login" className="hidden md:block text-foreground hover:text-accent font-medium transition-colors">Log In</Link>
-            <Link href="/register?mode=register" className="hidden md:block bg-[#70241C] text-white px-6 py-2.5 rounded-full font-medium hover:bg-[#5a1d16] transition-colors shadow-sm">
+            <Link href="/register?mode=login" className="hidden md:block text-[var(--color-cherry)] hover:text-white font-medium transition-colors">Log In</Link>
+            <Link href="/register?mode=register" className="hidden md:block bg-[var(--color-green)] text-[var(--color-cherry)] px-6 py-2.5 rounded-full font-medium hover:opacity-90 transition-opacity shadow-sm">
               Join Bindr
             </Link>
           </>

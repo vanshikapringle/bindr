@@ -17,17 +17,17 @@ export default function InitialLoader() {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    // Show the loader for exactly 6.5 seconds
+    // Show the loader for exactly 5 seconds
     const timer = setTimeout(() => {
       setShow(false);
-    }, 6500);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#FCFAF8]">
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[var(--background)]">
       <div className="loader">
         <div>
           <ul>

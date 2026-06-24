@@ -10,7 +10,7 @@ const stats = [
 
 export default function Statistics() {
   return (
-    <section className="w-full py-24 px-8 md:px-16 bg-[#E8DCC8] relative overflow-hidden">
+    <section className="w-full py-24 px-8 md:px-16 bg-[var(--accent)] relative overflow-hidden">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-center items-center gap-6 md:gap-[-20px]">
         {stats.map((stat, index) => (
           <motion.div

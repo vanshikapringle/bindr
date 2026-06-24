@@ -38,7 +38,7 @@ export default function MyLibrary() {
           fetch("http://localhost:5000/requests/outgoing", { headers })
         ]);
 
-        const shelf = shelfRes.ok ? await shelfRes.json() : [];
+        const allMyBooks = shelfRes.ok ? await shelfRes.json() : [];
         const wishlist = wishlistRes.ok ? await wishlistRes.json() : [];
         const incoming = incomingRes.ok ? await incomingRes.json() : [];
         const outgoing = outgoingRes.ok ? await outgoingRes.json() : [];
@@ -46,19 +46,28 @@ export default function MyLibrary() {
         // Active statuses for reading/lent tabs
         const activeStatuses = ["accepted", "picked_up", "currently_reading", "returned"];
         const lent = incoming.filter((r: any) => activeStatuses.includes(r.status));
-        const reading = outgoing.filter((r: any) => activeStatuses.includes(r.status));
+        
+        const shelf = allMyBooks.filter((b: any) => b.availability_status === 'available');
+        const personalReading = allMyBooks.filter((b: any) => b.availability_status === 'reading').map((b: any) => ({...b, isPersonalRead: true}));
+        const readingHistory = allMyBooks.filter((b: any) => b.availability_status === 'completed');
+        
+        const exchangeHistory = [...incoming, ...outgoing]
+          .filter((r: any) => r.status === 'exchange_completed' || r.status === 'returned')
+          .map(r => ({...r, isExchangeHistory: true, availability_status: 'completed'}));
+
+        const reading = [...outgoing.filter((r: any) => activeStatuses.includes(r.status)), ...personalReading];
 
         setData({
           shelf,
           reading,
           lent,
           wishlist,
-          history: [], // Will be handled via profile API or separate endpoint
+          history: [...readingHistory, ...exchangeHistory],
           nearby: [
             { id: 1, first_name: "Ananya", city: "Mohali", books_shared: 12 },
             { id: 2, first_name: "Rahul", city: "Chandigarh", books_shared: 34 }
           ],
-          stats: { shared: shelf.length, borrowed: 12, exchanges: 8, rating: 4.8 }
+          stats: { shared: shelf.length, borrowed: outgoing.length, exchanges: lent.length, rating: 4.8 }
         });
       } catch (err) {
         console.error(err);
@@ -88,11 +97,15 @@ export default function MyLibrary() {
       const res = await fetch("http://localhost:5000/books", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ ...addForm, cover_image })
+        body: JSON.stringify({ ...addForm, cover_image, availability_status: activeTab === 'reading' ? 'reading' : 'available' })
       });
       if (res.ok) {
         const newBook = await res.json();
-        setData((prev: any) => ({ ...prev, shelf: [newBook, ...prev.shelf], stats: { ...prev.stats, shared: prev.stats.shared + 1 } }));
+        if (activeTab === 'reading') {
+          setData((prev: any) => ({ ...prev, reading: [{...newBook, isPersonalRead: true}, ...prev.reading] }));
+        } else {
+          setData((prev: any) => ({ ...prev, shelf: [newBook, ...prev.shelf], stats: { ...prev.stats, shared: prev.stats.shared + 1 } }));
+        }
         setShowAddModal(false);
         setAddForm({ title: "", author: "", category: "Fiction", coverImage: "" });
       } else {
@@ -121,6 +134,21 @@ export default function MyLibrary() {
     }
   };
 
+  const handleMarkCompleted = async (bookId: number) => {
+    try {
+      const token = localStorage.getItem("bindr_token");
+      const res = await fetch(`http://localhost:5000/books/${bookId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ availability_status: 'completed' })
+      });
+      if (res.ok) {
+        alert("Marked as completed!");
+        window.location.reload();
+      } else alert("Failed to mark completed.");
+    } catch (err) { alert("Error."); }
+  };
+
   return (
     <div className="p-8 max-w-[1400px] mx-auto text-foreground min-h-screen">
       
@@ -144,7 +172,7 @@ export default function MyLibrary() {
             <p className="text-[10px] uppercase tracking-wider text-muted font-bold">Exchanges</p>
             <p className="font-serif text-2xl font-bold">{data.stats.exchanges}</p>
           </div>
-          <div className="bg-white border border-border px-4 py-2 rounded-xl text-center shadow-sm flex flex-col items-center justify-center bg-[#FCFAF8]">
+          <div className="bg-white border border-border px-4 py-2 rounded-xl text-center shadow-sm flex flex-col items-center justify-center bg-background">
             <p className="text-[10px] uppercase tracking-wider text-muted font-bold flex items-center gap-1"><Star size={10} className="fill-accent text-accent" /> Rating</p>
             <p className="font-serif text-2xl font-bold text-accent">{data.stats.rating}</p>
           </div>
@@ -189,12 +217,12 @@ export default function MyLibrary() {
                 {activeTab === "nearby" && "Readers in your neighborhood"}
               </h2>
               {activeTab === "shelf" && (
-                <button onClick={() => setShowAddModal(true)} className="bg-foreground text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-accent transition-colors flex items-center gap-2 shadow-sm">
+                <button onClick={() => setShowAddModal(true)} className="dashboard-btn shadow-sm">
                   <Plus size={16} /> Add to Shelf
                 </button>
               )}
               {activeTab === "reading" && (
-                <button onClick={() => setShowAddModal(true)} className="bg-foreground text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-accent transition-colors flex items-center gap-2 shadow-sm">
+                <button onClick={() => setShowAddModal(true)} className="dashboard-btn shadow-sm">
                   <Plus size={16} /> Add Current Read
                 </button>
               )}
@@ -206,9 +234,9 @@ export default function MyLibrary() {
                   <ReaderCard key={i} reader={reader} distance={`${(i+1)*2.3} km`} />
                 ))}
               </div>
-            ) : activeTab === "reading" || activeTab === "lent" ? (
+            ) : activeTab === "lent" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {(activeTab === "reading" ? data.reading : data.lent).map((book: any, i: number) => (
+                {data.lent.map((book: any, i: number) => (
                   <div key={i} className="bg-white border border-border rounded-2xl shadow-sm p-6 flex gap-6">
                     <div className="w-32 shrink-0">
                        <img src={book.cover_image} alt={book.title} className="w-full aspect-[2/3] object-cover rounded-md shadow-sm border border-border" />
@@ -217,17 +245,21 @@ export default function MyLibrary() {
                       <h4 className="font-serif font-bold text-xl mb-1">{book.title}</h4>
                       <p className="text-muted text-sm mb-4">{book.author}</p>
                       
-                      <div className="bg-[#FCFAF8] p-4 rounded-xl border border-border mb-4">
-                        <LendingStatusFlow currentStatus={book.status} />
+                      <div className="bg-background p-4 rounded-xl border border-border mb-4">
+                        <LendingStatusFlow currentStatus={book.isPersonalRead ? 'currently_reading' : book.status} />
                       </div>
                       
-                      <ReturnTracker borrowDate={book.borrow_date} returnDate={book.return_date} />
-                      <button 
-                        onClick={() => handleReturnBook(book.request_id)}
-                        className="mt-4 w-full bg-foreground text-white py-2 rounded-lg font-medium hover:bg-accent transition-colors"
-                      >
-                        Complete Exchange (Mark as Returned)
-                      </button>
+                      {!book.isPersonalRead && (
+                        <>
+                          <ReturnTracker borrowDate={book.borrow_date} returnDate={book.return_date} />
+                          <button 
+                            onClick={() => handleReturnBook(book.request_id)}
+                            className="mt-4 w-full dashboard-btn"
+                          >
+                            Complete Exchange (Mark as Returned)
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -235,11 +267,16 @@ export default function MyLibrary() {
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 {(data as any)[activeTab].map((book: any, i: number) => (
-                  <BookCard key={i} book={book} isOwner={activeTab === "shelf"} />
+                  <BookCard 
+                    key={i} 
+                    book={book} 
+                    isOwner={activeTab === "shelf" || activeTab === "reading"} 
+                    onMarkCompleted={activeTab === "reading" ? handleMarkCompleted : undefined}
+                  />
                 ))}
                 
                 {activeTab === "shelf" && (
-                  <button onClick={() => setShowAddModal(true)} className="aspect-[2/3] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center text-muted hover:text-accent hover:border-accent hover:bg-[#FCFAF8] transition-all">
+                  <button onClick={() => setShowAddModal(true)} className="aspect-[2/3] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center text-muted hover:text-accent hover:border-accent hover:bg-background transition-all">
                     <Plus size={32} className="mb-2" />
                     <span className="font-medium text-sm">Add New Book</span>
                   </button>

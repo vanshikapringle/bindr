@@ -12,7 +12,7 @@ export default function AdminLayout({
   return (
     <div className="flex h-screen bg-[#F7F0E4] text-foreground overflow-hidden font-sans">
       {/* Sidebar - Bindr Theme */}
-      <aside className="w-64 bg-[#FCFAF8] border-r border-border flex flex-col h-full">
+      <aside className="w-64 bg-[var(--background)] border-r border-border flex flex-col h-full">
         <div className="p-6 flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center">
             <Database size={18} />
@@ -25,7 +25,7 @@ export default function AdminLayout({
           <input 
             type="text" 
             placeholder="Search" 
-            className="w-full bg-[#E8DCC8]/30 border border-transparent rounded-lg py-1.5 pl-8 pr-3 text-sm focus:outline-none focus:border-accent"
+            className="w-full bg-[var(--accent)]/30 border border-transparent rounded-lg py-1.5 pl-8 pr-3 text-sm focus:outline-none focus:border-accent"
           />
         </div>
 
@@ -33,16 +33,16 @@ export default function AdminLayout({
           <div>
             <p className="px-2 text-[10px] font-bold text-muted uppercase tracking-wider mb-2">Main</p>
             <nav className="space-y-0.5">
-              <Link href="#" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-muted hover:bg-[#E8DCC8]/50 transition-colors">
+              <Link href="#" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-muted hover:bg-[var(--accent)]/50 transition-colors">
                 <LayoutDashboard size={16} /> Dashboard
               </Link>
-              <Link href="/admin/dashboard" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm bg-[#E8DCC8] text-foreground font-medium shadow-sm">
+              <Link href="/admin/dashboard" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm bg-[var(--accent)] text-foreground font-medium shadow-sm">
                 <Database size={16} className="text-accent" /> Database
               </Link>
-              <Link href="#" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-muted hover:bg-[#E8DCC8]/50 transition-colors">
+              <Link href="#" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-muted hover:bg-[var(--accent)]/50 transition-colors">
                 <Users size={16} /> Users
               </Link>
-              <Link href="#" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-muted hover:bg-[#E8DCC8]/50 transition-colors">
+              <Link href="#" className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-muted hover:bg-[var(--accent)]/50 transition-colors">
                 <Flag size={16} /> Reports
               </Link>
             </nav>

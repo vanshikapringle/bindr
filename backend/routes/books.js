@@ -6,16 +6,16 @@ const authMiddleware = require("../middleware/authMiddleware");
 // Add Book
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    const { title, author, isbn, category } = req.body;
+    const { title, author, isbn, category, cover_image, availability_status } = req.body;
 
     const owner_id = req.user.user_id;
 
     const newBook = await pool.query(
       `INSERT INTO books
-      (title, author, isbn, category, owner_id)
-      VALUES ($1, $2, $3, $4, $5)
+      (title, author, isbn, category, owner_id, cover_image, availability_status)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *`,
-      [title, author, isbn, category, owner_id]
+      [title, author, isbn, category, owner_id, cover_image || '', availability_status || 'available']
     );
 
     res.json(newBook.rows[0]);
@@ -105,7 +105,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
     const bookId = req.params.id;
     const currentUser = req.user.user_id;
 
-    const { title, author, isbn, category } = req.body;
+    const { title, author, isbn, category, cover_image, availability_status } = req.body;
 
     const book = await pool.query(
       "SELECT * FROM books WHERE book_id = $1",
@@ -123,14 +123,16 @@ router.put("/:id", authMiddleware, async (req, res) => {
     const updatedBook = await pool.query(
       `
       UPDATE books
-      SET title = $1,
-          author = $2,
-          isbn = $3,
-          category = $4
-      WHERE book_id = $5
+      SET title = COALESCE($1, title),
+          author = COALESCE($2, author),
+          isbn = COALESCE($3, isbn),
+          category = COALESCE($4, category),
+          cover_image = COALESCE($5, cover_image),
+          availability_status = COALESCE($6, availability_status)
+      WHERE book_id = $7
       RETURNING *
       `,
-      [title, author, isbn, category, bookId]
+      [title, author, isbn, category, cover_image, availability_status, bookId]
     );
 
     res.json(updatedBook.rows[0]);

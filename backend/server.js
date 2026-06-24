@@ -46,7 +46,11 @@ app.get("/public-dashboard-data", authMiddleware, async (req, res) => {
       JOIN users u ON r.requester_id = u.user_id
       ORDER BY r.request_date DESC
     `);
-    res.json({ books: books.rows, requests: requests.rows });
+    const communityReads = await pool.query(
+      "SELECT b.*, u.first_name as reader_name FROM books b JOIN users u ON b.owner_id = u.user_id WHERE b.owner_id != $1 AND b.availability_status IN ('reading', 'completed') ORDER BY b.book_id DESC LIMIT 10",
+      [req.user.user_id]
+    );
+    res.json({ books: books.rows, requests: requests.rows, community_reads: communityReads.rows });
   } catch (err) {
     res.status(500).json("Server error");
   }

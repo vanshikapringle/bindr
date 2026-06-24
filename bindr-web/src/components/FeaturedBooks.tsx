@@ -84,7 +84,7 @@ export default function FeaturedBooks() {
                 </div>
                 
                 <div className="pt-3 border-t border-border flex items-center justify-between">
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${book.available ? 'bg-[#E8DCC8] text-accent-hover' : 'bg-gray-200 text-gray-500'}`}>
+                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${book.available ? 'bg-[var(--accent)] text-accent-hover' : 'bg-gray-200 text-gray-500'}`}>
                     {book.available ? 'Available' : 'Currently Lent'}
                   </span>
                 </div>

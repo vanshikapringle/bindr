@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "A modern book exchange and community platform where users can discover, exchange, lend, and track books.",
 };
 
+import InitialLoader from "@/components/InitialLoader";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} antialiased selection:bg-[#C58A55] selection:text-white`}
       >
+        <InitialLoader />
         {children}
       </body>
     </html>

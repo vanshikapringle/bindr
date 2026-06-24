@@ -43,7 +43,7 @@ export default function HowItWorks() {
               whileHover={{ y: -8 }}
               className="bg-card p-10 rounded-[2rem] border border-border flex flex-col items-center text-center shadow-sm hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 rounded-2xl bg-[#E8DCC8] flex items-center justify-center text-accent mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-[var(--accent)] flex items-center justify-center text-accent mb-6">
                 <step.icon strokeWidth={1.5} size={32} />
               </div>
               <h3 className="font-serif text-2xl text-foreground mb-4">{step.title}</h3>

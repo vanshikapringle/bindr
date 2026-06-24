@@ -88,13 +88,13 @@ export default function TopNavbar() {
           {/* Search & Actions */}
           <div className="hidden md:flex items-center gap-4 flex-shrink-0">
             <form onSubmit={handleSearch} className="relative w-64 lg:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={16} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-midnight)]/60" size={16} />
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search titles, authors, or genres..." 
-                className="w-full bg-white border border-border rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-accent transition-colors shadow-sm"
+                className="w-full bg-[var(--color-cherry)] text-[var(--color-midnight)] border border-[var(--color-midnight)]/20 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-midnight)]/50 transition-colors shadow-sm placeholder:text-[var(--color-midnight)]/60"
               />
             </form>
 

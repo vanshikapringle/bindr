@@ -154,6 +154,8 @@ router.get("/search", async (req, res) => {
       SELECT *
       FROM books
       WHERE LOWER(title) LIKE LOWER($1)
+         OR LOWER(author) LIKE LOWER($1)
+         OR LOWER(category) LIKE LOWER($1)
       `,
       [`%${title}%`]
     );

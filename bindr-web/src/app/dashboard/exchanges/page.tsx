@@ -133,7 +133,7 @@ export default function Exchanges() {
       ) : (
         <div className="space-y-6">
           {requests.map((req, i) => (
-            <div key={i} className="bg-white border border-border rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
+            <div key={i} className="bg-transparent border border-[var(--color-midnight)]/10 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow backdrop-blur-sm">
               <div className="flex gap-6 items-center">
                 <div 
                   className="w-16 h-24 bg-[var(--accent)] rounded-r-md rounded-l-sm shadow-sm border-l-[6px] border-black/20 relative overflow-hidden flex-shrink-0"
@@ -142,20 +142,20 @@ export default function Exchanges() {
                   <div className="absolute inset-0 bg-black/10"></div>
                 </div>
                 <div>
-                  <p className={`text-sm font-bold uppercase tracking-widest mb-1 ${req.status === 'pending' ? 'text-accent' : req.status === 'accepted' ? 'text-green-600' : req.status === 'exchange_completed' || req.status === 'returned' ? 'text-muted' : 'text-red-600'}`}>
+                  <p className={`text-sm font-bold uppercase tracking-widest mb-1 ${req.status === 'pending' ? 'text-[var(--color-midnight)]' : req.status === 'accepted' ? 'text-green-600' : req.status === 'exchange_completed' || req.status === 'returned' ? 'text-[var(--color-midnight)]/60' : 'text-red-600'}`}>
                     {req.status === 'exchange_completed' ? 'Completed' : req.status} Request
                   </p>
-                  <h3 className="font-serif text-2xl text-foreground mb-1">{req.title}</h3>
-                  <p className="text-muted text-sm mb-3">Requested by <span className="font-medium text-foreground">{req.requester_id || "Reader"}</span></p>
+                  <h3 className="font-serif text-2xl text-[var(--color-midnight)] mb-1">{req.title}</h3>
+                  <p className="text-[var(--color-midnight)]/70 text-sm mb-3">Requested by <span className="font-medium text-[var(--color-midnight)]">{req.requester_id || "Reader"}</span></p>
                 </div>
               </div>
               
               {activeTab === "incoming" && req.status === 'pending' ? (
                 <div className="flex flex-row md:flex-col gap-3">
-                  <button onClick={() => handleAcceptRequest(req.request_id)} className="dashboard-btn flex-1 md:flex-none">
+                  <button onClick={() => handleAcceptRequest(req.request_id)} className="dashboard-btn flex-1 md:flex-none !bg-[var(--color-midnight)] !text-white !border-[var(--color-midnight)] hover:!bg-[var(--color-midnight)]/90">
                     <Check size={18} /> Accept
                   </button>
-                  <button onClick={() => handleRejectRequest(req.request_id)} className="dashboard-btn flex-1 md:flex-none !border-solid !border-border !bg-transparent !text-foreground hover:!bg-red-50 hover:!text-red-600 hover:!border-red-200">
+                  <button onClick={() => handleRejectRequest(req.request_id)} className="dashboard-btn flex-1 md:flex-none !bg-[var(--color-midnight)] !text-white !border-[var(--color-midnight)] hover:!bg-[var(--color-midnight)]/90">
                     <X size={18} /> Decline
                   </button>
                 </div>
